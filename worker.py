@@ -21,7 +21,7 @@ async def main():
             activities.Activity1,
             activities.Activity2,
             activities.Activity3,
-            activities.FailingActivity,
+            activities.Activity4,
         ],
     )
     await worker.run()

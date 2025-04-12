@@ -22,7 +22,12 @@ class DebugActivities:
         return type if attempt < 5 else "NoError"
 
     @activity.defn
-    async def FailingActivity(self, workflow_type: str):
+    async def Activity1(self):
+        activity.logger.info(f"activity 1")
+        await self.simulate_external_operation(100)
+
+    @activity.defn
+    async def Activity2(self, workflow_type: str):
         activity.logger.info(f"OCR activity")
         attempt = activity.info().attempt
 
@@ -42,16 +47,11 @@ class DebugActivities:
                 pass
 
     @activity.defn
-    async def Activity1(self):
-        activity.logger.info(f"activity 1")
-        await self.simulate_external_operation(100)
-
-    @activity.defn
-    async def Activity2(self):
+    async def Activity3(self):
         activity.logger.info(f"activity 2")
         await self.simulate_external_operation(100)
 
     @activity.defn
-    async def Activity3(self):
+    async def Activity4(self):
         activity.logger.info(f"activity 3")
         await self.simulate_external_operation(100)
