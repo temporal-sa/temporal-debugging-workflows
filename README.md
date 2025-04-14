@@ -36,3 +36,12 @@ $ poetry run python starter.py NonRecoverableFailure
 ```bash
 $ poetry run python starter.py RecoverableFailure
 ```
+
+### NDE Failure
+```bash
+$ poetry run python starter.py NDE
+```
+
+Once you start workflow CTRL-C worker and comment out/change Activity from Activity1 to Activity2. Upon starting worker you will observe NDE.
+
+Reset Workflow to first workflow task.
