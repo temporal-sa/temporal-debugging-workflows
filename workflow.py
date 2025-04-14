@@ -12,6 +12,7 @@ class DebugWorkflow:
 
     BUG = "DebugRecoverableFailure"
     NDE = "DebugNDE"
+    PENDING_ACTIVITY = "DebugPendingActivity"
     
     def __init__(self) -> None:
         self.retry_policy = DebugActivities.retry_policy
@@ -32,6 +33,13 @@ class DebugWorkflow:
 
             await asyncio.sleep(30)
             
+        elif self.PENDING_ACTIVITY == workflow_type:
+            await workflow.execute_activity(
+                DebugActivities.Activity5,
+                start_to_close_timeout=timedelta(seconds=60),
+                retry_policy=self.retry_policy
+            )
+
         else:
             await workflow.execute_activity(
                 DebugActivities.Activity1,

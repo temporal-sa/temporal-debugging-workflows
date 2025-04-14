@@ -55,3 +55,8 @@ class DebugActivities:
     async def Activity4(self):
         activity.logger.info(f"activity 3")
         await self.simulate_external_operation(100)
+
+    @activity.defn
+    async def Activity5(self):
+        activity.logger.info(f"activity 5")
+        await self.simulate_external_operation(100)

@@ -11,37 +11,90 @@ Requires [Poetry](https://python-poetry.org/) to manage dependencies.
 3. `poetry install`
 
 
-## Start Worker
+## Set Cloud Environment
+
+Copy the setcloudenv.sh.example to setcloudenv.sh
 ```bash
-$ poetry run python worker.py
+cp setcloudenv.sh.example setcloudenv.sh
+```
+
+Edit setcloudenv.sh to match your Temporal Cloud account:
+
+```bash
+export TEMPORAL_HOST_URL=<namespace>.<accountId>.tmprl.cloud:7233
+export TEMPORAL_NAMESPACE=<namespace>.<accountId>
+export TEMPORAL_MTLS_TLS_CERT=/path/to/tls/cert.pem
+export TEMPORAL_MTLS_TLS_KEY=/path/to/tls/client.key
+export TEMPORAL_WORKER_METRICS_PORT=8888
+export TEMPORAL_TASK_QUEUE=DebugTaskQueue
+```
+
+## Start Worker
+In a new terminal window, set up the virtual environment:
+
+```bash
+./setvenv.sh
+```
+
+### Start the worker
+```bash
+$ ./startcloudworker.sh 
 ```
 
 ## Run Workflows
-### Happy Path
+In a new terminal window, set up the virtual environment:
+
 ```bash
-$ poetry run python starter.py HappyPath
+./setvenv.sh
+```
+
+### Happy Path
+This scenario runs successfully without any issues
+
+```bash
+$ ./startcloudwf.sh HappyPath
 ```
 
 ### API Failure
+This scenario purposefully causes an activity to retry, simulating that the API is down. It succeeds on the 5th attempt. 
 ```bash
-$ poetry run python starter.py APIFailure
+$ /startcloudwf.sh APIFailure
 ```
 
 ### NonRecoverable Failure
+This scenario fails the workflow due to a business reason. Sets the retryable to false.
+
 ```bash
-$ poetry run python starter.py NonRecoverableFailure
+$ /startcloudwf.sh NonRecoverableFailure
 ```
 
 ### Recoverable Failure
+Demonstrates a bug in the code that raises an exception. 
+
 ```bash
-$ poetry run python starter.py RecoverableFailure
+$ /startcloudwf.sh RecoverableFailure
 ```
+Kill the worker.
+Fix the code by commenting out line # 65 where the exception is raised
+Restart the worker
 
 ### NDE Failure
+Demonstrates a non-determinism error.
+
 ```bash
-$ poetry run python starter.py NDE
+$ /startcloudwf.sh NDE
 ```
 
 Once you start workflow CTRL-C worker and comment out/change Activity from Activity1 to Activity2. Upon starting worker you will observe NDE.
 
 Reset Workflow to first workflow task.
+
+### Pending Activities
+Shows what happens when an activity has not be registered.
+
+```bash
+$ /startcloudwf.sh PendingActivity
+```
+
+Once the workflow has started, kill the worker, open worker.py and uncomment Activity5
+Restart the worker and the workflow will continue

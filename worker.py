@@ -22,6 +22,8 @@ async def main():
             activities.Activity2,
             activities.Activity3,
             activities.Activity4,
+            # uncomment the line to resolve pending activities
+            # activities.Activity5,
         ],
     )
     await worker.run()

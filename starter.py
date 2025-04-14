@@ -9,6 +9,7 @@ async def main():
     logging.basicConfig(level=logging.INFO)
     id = str(uuid.uuid4().int)[:6] 
     scenario=sys.argv[1]
+    print(f"Scenario is {scenario}")
 
     client = await get_client()
 
