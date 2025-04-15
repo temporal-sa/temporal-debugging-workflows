@@ -3,6 +3,7 @@ from typing import Sequence, Any
 from temporalio import workflow
 from temporalio.common import RawValue
 import asyncio
+import time
 
 with workflow.unsafe.imports_passed_through():
     from activities import DebugActivities
@@ -13,6 +14,7 @@ class DebugWorkflow:
     BUG = "DebugRecoverableFailure"
     NDE = "DebugNDE"
     PENDING_ACTIVITY = "DebugPendingActivity"
+    DEADLOCK = "DebugDeadlock"
     
     def __init__(self) -> None:
         self.retry_policy = DebugActivities.retry_policy
@@ -39,7 +41,6 @@ class DebugWorkflow:
                 start_to_close_timeout=timedelta(seconds=60),
                 retry_policy=self.retry_policy
             )
-
         else:
             await workflow.execute_activity(
                 DebugActivities.Activity1,
@@ -59,6 +60,11 @@ class DebugWorkflow:
                 start_to_close_timeout=timedelta(seconds=60),
                 retry_policy=self.retry_policy                 
             )
+
+            if self.DEADLOCK == workflow_type:
+                # Simulate deadlock
+                # Deadlock detector will by default fail workflow task if anything blocks more than 2 seconds.
+                time.sleep(5) 
 
             if self.BUG == workflow_type:
                 # Simulate bug
