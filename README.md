@@ -116,3 +116,13 @@ $ /startcloudwf.sh PendingActivity
 
 Once the workflow has started, kill the worker, open worker.py and uncomment Activity5
 Restart the worker and the workflow will continue
+
+### Potential Deadlock Detected
+Shows what happens when a workflow task takes longer than 2 seconds
+
+```bash
+$ /startcloudwf.sh Deadlock
+```
+
+Stop the worker and comment out the sleep in the workflow.py (Line 67). 
+Restart the worker and the workflow will continue

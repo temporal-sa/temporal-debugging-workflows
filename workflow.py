@@ -64,7 +64,8 @@ class DebugWorkflow:
             if self.DEADLOCK == workflow_type:
                 # Simulate deadlock
                 # Deadlock detector will by default fail workflow task if anything blocks more than 2 seconds.
-                time.sleep(5) 
+                time.sleep(5)
+                pass
 
             if self.BUG == workflow_type:
                 # Simulate bug
