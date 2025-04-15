@@ -73,6 +73,16 @@ Then kill this worker and start the regular one.
 $ ./startcloudworker.sh
 ```
 
+### Pending Activities
+Shows what happens when an activity has not be registered.
+
+```bash
+$ /startcloudwf.sh PendingActivity
+```
+
+Once the workflow has started, kill the worker, open worker.py and uncomment Activity5
+Restart the worker and the workflow will continue
+
 ### API Failure
 This scenario purposefully causes an activity to retry, simulating that the API is down. It succeeds on the 5th attempt. 
 ```bash
@@ -85,6 +95,21 @@ This scenario fails the workflow due to a business reason. Sets the retryable to
 ```bash
 $ /startcloudwf.sh NonRecoverableFailure
 ```
+
+### Activity Timeouts 
+This scenario fails to complete because the start_to_close timeout for an activity is
+shorter than the time the activity completes.
+
+```bash
+$ /startcloudwf.sh Timeout
+```
+
+Stop the worker. 
+Change start_to_close_timeout in workflow.py (> 5 seconds)
+Start the worker.
+Notice that the problem still is there. This is because Temporal Server is managing the timeouts.
+Terminate the workflow.
+Reset the workflow
 
 ### Recoverable Failure
 Demonstrates a bug in the code that raises an exception. 
@@ -107,15 +132,7 @@ Once you start workflow CTRL-C worker and comment out/change Activity from Activ
 
 Reset Workflow to first workflow task.
 
-### Pending Activities
-Shows what happens when an activity has not be registered.
 
-```bash
-$ /startcloudwf.sh PendingActivity
-```
-
-Once the workflow has started, kill the worker, open worker.py and uncomment Activity5
-Restart the worker and the workflow will continue
 
 ### Potential Deadlock Detected
 Shows what happens when a workflow task takes longer than 2 seconds

@@ -15,6 +15,7 @@ class DebugWorkflow:
     NDE = "DebugNDE"
     PENDING_ACTIVITY = "DebugPendingActivity"
     DEADLOCK = "DebugDeadlock"
+    TIMEOUT = "DebugTimeout"
     
     def __init__(self) -> None:
         self.retry_policy = DebugActivities.retry_policy
@@ -41,6 +42,20 @@ class DebugWorkflow:
                 start_to_close_timeout=timedelta(seconds=60),
                 retry_policy=self.retry_policy
             )
+
+        elif self.TIMEOUT == workflow_type:
+            await workflow.execute_activity(
+                DebugActivities.Activity6,
+                # change to fix
+                # the next line is too short of a timeout
+                # so comment this out to fix and uncomment
+                # out the following line
+                start_to_close_timeout=timedelta(seconds=2),
+                # use this to fix the error
+                # start_to_close_timeout=timedelta(seconds=60),
+                retry_policy=self.retry_policy
+            )
+
         else:
             await workflow.execute_activity(
                 DebugActivities.Activity1,
