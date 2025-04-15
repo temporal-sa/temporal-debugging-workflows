@@ -55,6 +55,24 @@ This scenario runs successfully without any issues
 $ ./startcloudwf.sh HappyPath
 ```
 
+### Misconfigured Task Queue
+This scenario demonstrates what happens when the task queue for the worker has a typo. 
+If you are running existing workers, stop them first.
+
+```bash
+$ ./startcloudwf.sh HappyPath
+```
+
+In another terminal, start the misconfigured worker:
+```bash
+$ ./startmisconfigcloudworker.sh HappyPath
+```
+
+Then kill this worker and start the regular one.
+```bash
+$ ./startcloudworker.sh
+```
+
 ### API Failure
 This scenario purposefully causes an activity to retry, simulating that the API is down. It succeeds on the 5th attempt. 
 ```bash

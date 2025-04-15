@@ -26,7 +26,7 @@ class DebugWorkflow:
             await workflow.execute_activity(
                 # Switch Activities during workflow run to cause NDE
                 DebugActivities.Activity1,
-                #DebugActivities.Activity3,
+                # DebugActivities.Activity3,
                 start_to_close_timeout=timedelta(seconds=60),
                 retry_policy=self.retry_policy                 
             )
